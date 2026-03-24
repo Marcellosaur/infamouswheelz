@@ -1,0 +1,550 @@
+
+
+<div
+  class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+  <div class="flex h-screen w-full overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside
+      class="w-20 lg:w-72 bg-[#1a0c0e] border-r border-[#482329] flex flex-col h-full shrink-0 transition-all duration-300">
+      <div class="p-6 flex items-center gap-3">
+        <div
+          class="h-10 w-10 rounded-full bg-primary flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(212,17,50,0.5)]">
+          <span class="material-symbols-outlined text-white" style="font-size: 24px;">two_wheeler</span>
+        </div>
+        <div class="hidden lg:flex flex-col">
+          <h1 class="text-white text-lg font-bold leading-none tracking-tight">InfamousWheelz</h1>
+          <p class="text-[#c9929b] text-xs font-medium">Seller Portal</p>
+        </div>
+      </div>
+      <nav class="flex-1 flex flex-col gap-2 px-3 py-4 overflow-y-auto">
+        <!-- Inventory tab -->
+        <a
+          (click)="setTab('inventory')"
+          class="flex items-center gap-3 px-3 py-3 rounded-lg transition-colors group cursor-pointer"
+          [ngClass]="activeTab === 'inventory'
+            ? 'bg-primary/10 border-l-4 border-primary text-white shadow-sm'
+            : 'text-[#c9929b] hover:bg-[#482329] hover:text-white'"
+        >
+          <span class="material-symbols-outlined"
+            [class.text-primary]="activeTab === 'inventory'">list_alt</span>
+          <span class="hidden lg:block text-sm font-bold">Manage Inventory</span>
+        </a>
+        <!-- Inquiries tab -->
+        <a
+          (click)="setTab('inquiries')"
+          class="flex items-center gap-3 px-3 py-3 rounded-lg transition-colors group cursor-pointer"
+          [ngClass]="activeTab === 'inquiries'
+            ? 'bg-primary/10 border-l-4 border-primary text-white shadow-sm'
+            : 'text-[#c9929b] hover:bg-[#482329] hover:text-white'"
+        >
+          <div class="relative">
+            <span class="material-symbols-outlined group-hover:scale-110 transition-transform"
+              [class.text-primary]="activeTab === 'inquiries'">chat_bubble</span>
+            <span class="absolute -top-1 -right-1 h-2.5 w-2.5 bg-primary rounded-full border-2 border-[#1a0c0e]"></span>
+          </div>
+          <span class="hidden lg:block text-sm font-medium">Inquiries</span>
+        </a>
+      </nav>
+      <div class="p-4 border-t border-[#482329]">
+        <div
+          class="flex items-center gap-3 p-2 rounded-lg bg-[#2d1519] cursor-pointer hover:bg-[#482329] transition-colors">
+          <div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 shrink-0 border border-[#67323b]"
+            data-alt="Profile picture of the user"
+            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_O7jTLVToKxe_F1PslCyCGqlKVKPO0ONIhMRRO0bu0D6dEAUt_vJv3U7yAExJQ0-iWURhkhGdxgy-F73aUGAL4k6czzoV7hUEl0cmBOUvwXRcSPPfBIy-NO8Fx_1d2NXorZe3pcedIYlPlK80lj3bjr1KYTZOAZtSok5VC1zoW61JKPkIAj67LMLu_OjavyrLOEGs2ZzJQEM9MDAVImQHuTlNAP5yzYOXS4rASx3SIsSLrShrn50N7k-JEyeqR1MZHh7GckNWf34N");'>
+          </div>
+          <div class="hidden lg:flex flex-col overflow-hidden">
+            <p class="text-white text-sm font-bold truncate">{{ sellerName }}</p>
+             <p class="text-[#c9929b] text-xs truncate">Seller</p>
+          </div>
+          <span
+            class="material-symbols-outlined text-[#c9929b] ml-auto hidden lg:block"
+            (click)="logout()"
+          >
+            logout
+          </span>
+        </div>
+      </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full bg-background-light dark:bg-background-dark overflow-hidden relative">
+      <!-- Header Section -->
+      <header class="w-full p-6 pb-2 shrink-0">
+        <div class="max-w-[1400px] mx-auto w-full">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                {{ activeTab === 'inventory' ? 'My Garage' : 'Inquiry Requests' }}
+              </h2>
+              <p class="text-slate-500 dark:text-[#c9929b] text-sm mt-1">
+                {{ activeTab === 'inventory' ? 'Manage your active listings and inventory' : 'Manage and respond to potential buyers interested in your listings.' }}
+              </p>
+            </div>
+            <button
+              *ngIf="activeTab === 'inventory'"
+              (click)="openCreateModal()"
+              class="flex items-center justify-center gap-2 bg-primary hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <span class="material-symbols-outlined">add_circle</span>
+              <span>Add New Motorcycle</span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <!-- Scrollable Content Area -->
+      <div class="flex-1 overflow-y-auto p-6 pt-4">
+        <div class="max-w-[1400px] mx-auto flex flex-col gap-6">
+
+          <!-- ====== INVENTORY TAB ====== -->
+          <ng-container *ngIf="activeTab === 'inventory'">
+            <!-- Filters and Search -->
+            <div
+              class="flex flex-col md:flex-row gap-4 items-center justify-between bg-white dark:bg-[#2d1519] p-4 rounded-xl border border-slate-200 dark:border-[#482329] shadow-sm">
+              <div class="relative w-full md:max-w-md group">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-slate-400 dark:text-[#c9929b] group-focus-within:text-primary transition-colors">search</span>
+                </div>
+                <input
+                  class="block w-full pl-10 pr-3 py-2.5 border-none rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-[#c9929b]/70 focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-[#221013] transition-all text-sm font-medium"
+                  placeholder="Search by bike model, year, or VIN..." type="text" />
+              </div>
+              <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+                <button (click)="setFilter('all')"
+                  [ngClass]="filterStatus === 'all' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-slate-100 dark:bg-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-200 dark:hover:bg-[#5a2e36]'"
+                  class="whitespace-nowrap px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                  All Listings <span class="ml-1 opacity-60 text-xs">({{ totalListings }})</span>
+                </button>
+                <button (click)="setFilter('available')"
+                  [ngClass]="filterStatus === 'available' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-slate-100 dark:bg-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-200 dark:hover:bg-[#5a2e36]'"
+                  class="whitespace-nowrap px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                  Active <span class="ml-1 opacity-60 text-xs">({{ activeCount }})</span>
+                </button>
+                <button (click)="setFilter('sold')"
+                  [ngClass]="filterStatus === 'sold' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-slate-100 dark:bg-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-200 dark:hover:bg-[#5a2e36]'"
+                  class="whitespace-nowrap px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                  Sold <span class="ml-1 opacity-60 text-xs">({{ soldCount }})</span>
+                </button>
+                <button class="whitespace-nowrap px-4 py-2 rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-200 dark:hover:bg-[#5a2e36] text-sm font-bold transition-colors flex items-center gap-1">
+                  <span class="material-symbols-outlined text-base">filter_list</span> Filter
+                </button>
+              </div>
+            </div>
+            <!-- Data Table -->
+            <div class="bg-white dark:bg-[#2d1519] border border-slate-200 dark:border-[#482329] rounded-xl overflow-hidden shadow-sm">
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[800px]">
+                  <thead class="bg-slate-50 dark:bg-[#381a1f] border-b border-slate-200 dark:border-[#482329]">
+                    <tr>
+                      <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-[#c9929b] uppercase tracking-wider w-24">Image</th>
+                      <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-[#c9929b] uppercase tracking-wider">Motorcycle Details</th>
+                      <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-[#c9929b] uppercase tracking-wider">Price</th>
+                      <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-[#c9929b] uppercase tracking-wider">Status</th>
+                      <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 dark:text-[#c9929b] uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 dark:divide-[#482329]">
+                    <tr *ngFor="let bike of filteredBikes" class="group hover:bg-slate-50 dark:hover:bg-[#36191d] transition-colors">
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="h-16 w-24 rounded-lg bg-cover bg-center shadow-sm border border-slate-200 dark:border-[#482329]"
+                          data-alt="Motorcycle image"
+                          [ngStyle]="{ 'background-image': 'url(' + resolveImageUrl(bike) + ')' }"></div>
+                      </td>
+                      <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                          <span class="text-base font-bold text-slate-900 dark:text-white">{{ bike.title }}</span>
+                          <span class="text-sm text-slate-500 dark:text-[#c9929b]">{{ bike.brand }} · {{ bike.engine_size || '—' }}</span>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-base font-medium font-mono text-slate-900 dark:text-white">${{ bike.price }}</span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full border"
+                          [ngClass]="(bike.status || 'Available') === 'Sold'
+                            ? 'bg-gray-100 text-gray-800 dark:bg-gray-700/50 dark:text-gray-300 border-gray-200 dark:border-gray-600'
+                            : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800'">
+                          {{ bike.status || 'Available' }}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-slate-100 dark:text-[#c9929b] dark:hover:text-white dark:hover:bg-[#482329] transition-colors"
+                            title="Edit Listing" (click)="openEditModal(bike)">
+                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                          </button>
+                          <button class="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:text-[#c9929b] dark:hover:text-red-400 dark:hover:bg-[#482329] transition-colors"
+                            title="Delete Listing" (click)="deleteBike(bike)">
+                            <span class="material-symbols-outlined text-[20px]">delete</span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="filteredBikes.length === 0">
+                      <td colspan="5" class="px-6 py-8 text-center text-slate-500 dark:text-[#c9929b]">No listings found for this seller.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="bg-slate-50 dark:bg-[#2d1519] border-t border-slate-200 dark:border-[#482329] px-6 py-4 flex items-center justify-between">
+                <span class="text-sm text-slate-500 dark:text-[#c9929b]">Showing <span class="font-bold text-slate-900 dark:text-white">{{ pageStart }}-{{ pageEnd }}</span> of <span class="font-bold text-slate-900 dark:text-white">{{ totalListings }}</span> active listings</span>
+                <div class="flex items-center gap-2">
+                  <button class="p-2 rounded-lg text-slate-400 dark:text-[#c9929b] hover:bg-slate-200 dark:hover:bg-[#482329] disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <span class="material-symbols-outlined text-sm">arrow_back_ios</span>
+                  </button>
+                  <button class="p-2 rounded-lg text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-[#482329]">
+                    <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom Tip -->
+            <div class="pb-6">
+              <div class="flex items-start gap-3 p-4 rounded-xl bg-blue-50 dark:bg-[#221516] border border-blue-100 dark:border-[#482329]">
+                <span class="material-symbols-outlined text-blue-500 dark:text-primary mt-0.5">info</span>
+                <div>
+                  <p class="text-sm font-bold text-slate-800 dark:text-white">Pro Tip</p>
+                  <p class="text-sm text-slate-600 dark:text-[#c9929b]">Listings with 10+ high-quality images receive 40% more inquiries. <a class="text-primary underline hover:text-red-400" href="#">Read our photography guide.</a></p>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- ====== INQUIRIES TAB ====== -->
+          <ng-container *ngIf="activeTab === 'inquiries'">
+            <!-- Filter Chips -->
+            <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+              <button
+                (click)="filterInquiries('All')"
+                [ngClass]="inquiryFilter === 'All' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-white dark:bg-[#2d1519] border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-50 dark:hover:bg-[#482329]'"
+                class="flex whitespace-nowrap items-center px-4 py-2 rounded-full text-sm font-semibold transition-transform active:scale-95">All Inquiries</button>
+              <button
+                (click)="filterInquiries('Pending')"
+                [ngClass]="inquiryFilter === 'Pending' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-white dark:bg-[#2d1519] border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-50 dark:hover:bg-[#482329]'"
+                class="flex whitespace-nowrap items-center px-4 py-2 rounded-full text-sm font-medium transition-all active:scale-95">
+                Pending <span *ngIf="pendingInquiriesCount > 0" class="ml-2 bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded-md">{{ pendingInquiriesCount }}</span>
+              </button>
+              <button
+                (click)="filterInquiries('Approved')"
+                [ngClass]="inquiryFilter === 'Approved' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-white dark:bg-[#2d1519] border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-50 dark:hover:bg-[#482329]'"
+                class="flex whitespace-nowrap items-center px-4 py-2 rounded-full text-sm font-medium transition-all active:scale-95">Approved</button>
+              <button
+                (click)="filterInquiries('Rejected')"
+                [ngClass]="inquiryFilter === 'Rejected' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-white dark:bg-[#2d1519] border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-50 dark:hover:bg-[#482329]'"
+                class="flex whitespace-nowrap items-center px-4 py-2 rounded-full text-sm font-medium transition-all active:scale-95">Rejected</button>
+            </div>
+            <!-- Table -->
+            <div class="bg-white dark:bg-[#2d1519] rounded-2xl shadow-sm border border-slate-200 dark:border-[#482329] overflow-hidden">
+              <div class="hidden md:block overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 dark:bg-[#381a1f] border-b border-slate-200 dark:border-[#482329]">
+                      <th class="p-5 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#c9929b]">Buyer</th>
+                      <th class="p-5 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#c9929b]">Motorcycle</th>
+                      <th class="p-5 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#c9929b] w-1/3">Message</th>
+                      <th class="p-5 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#c9929b] text-center">Status</th>
+                      <th class="p-5 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#c9929b] text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 dark:divide-[#482329]">
+                    <ng-container *ngIf="filteredInquiries.length > 0; else noInquiries">
+                      <tr *ngFor="let inquiry of filteredInquiries" class="group hover:bg-slate-50 dark:hover:bg-[#36191d] transition-colors">
+                        <td class="p-5">
+                          <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-full bg-slate-200 dark:bg-[#482329] text-primary flex items-center justify-center font-bold text-sm overflow-hidden flex-shrink-0">
+                              {{ getInitials(inquiry.buyer_name) }}
+                            </div>
+                            <div>
+                              <div class="font-bold text-slate-900 dark:text-white">{{ inquiry.buyer_name }}</div>
+                              <div class="text-xs text-slate-500 dark:text-[#c9929b]">Joined {{ dateToMonthYear(inquiry.buyer_since) }}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="p-5">
+                          <div class="flex items-center gap-3">
+                            <div class="w-16 h-12 rounded-lg bg-gray-800 overflow-hidden flex-shrink-0">
+                              <img [alt]="inquiry.motorcycle_title" class="w-full h-full object-cover" [src]="resolveImageUrl($any({ image_url: inquiry.motorcycle_image }))" />
+                            </div>
+                            <div>
+                              <div class="font-bold text-sm text-slate-900 dark:text-white">{{ inquiry.motorcycle_title }}</div>
+                              <div class="text-xs text-primary font-medium">${{ inquiry.motorcycle_price }}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="p-5"><p class="text-sm text-slate-600 dark:text-[#c9929b] line-clamp-2">{{ inquiry.message }}</p></td>
+                        <td class="p-5 text-center">
+                          <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
+                            [ngClass]="{
+                              'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500 border border-amber-200 dark:border-amber-800': inquiry.status === 'Pending',
+                              'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-500 border border-emerald-200 dark:border-emerald-800': inquiry.status === 'Approved',
+                              'bg-slate-100 dark:bg-[#381a1f] text-slate-600 dark:text-[#c9929b] border border-slate-200 dark:border-[#482329]': inquiry.status === 'Rejected'
+                            }">
+                            <span *ngIf="inquiry.status === 'Pending'" class="size-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                            {{ inquiry.status }}
+                          </span>
+                        </td>
+                        <td class="p-5">
+                          <div class="flex items-center justify-end gap-2" *ngIf="inquiry.status === 'Pending'">
+                            <button
+                              (click)="rejectInquiry(inquiry.id)"
+                              class="flex items-center justify-center size-9 rounded-lg border border-slate-200 dark:border-[#482329] text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all" title="Reject">
+                              <span class="material-symbols-outlined text-[20px]">close</span>
+                            </button>
+                            <button
+                              (click)="approveInquiry(inquiry.id)"
+                              class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-red-700 text-white text-sm font-bold transition-all">
+                              <span class="material-symbols-outlined text-[18px]">check</span> Approve
+                            </button>
+                          </div>
+                          
+                          <div class="flex items-center justify-end" *ngIf="inquiry.status === 'Approved'">
+                            <button class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-primary hover:bg-primary/10 text-sm font-bold transition-all">
+                              <span class="material-symbols-outlined text-[18px]">chat</span> View Contact
+                            </button>
+                          </div>
+                          <div class="flex items-center justify-end" *ngIf="inquiry.status === 'Rejected'">
+                            <span class="text-xs font-medium text-slate-400 uppercase tracking-wide">Closed</span>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <ng-template #noInquiries>
+                      <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-slate-500 dark:text-[#c9929b]">No inquiries found for this filter.</td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Mobile cards -->
+              <div class="md:hidden flex flex-col divide-y divide-slate-200 dark:divide-[#482329]">
+                <ng-container *ngIf="filteredInquiries.length > 0; else noMobileInquiries">
+                  <div *ngFor="let inquiry of filteredInquiries" class="p-5 flex flex-col gap-4">
+                    <div class="flex justify-between items-start">
+                      <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-full bg-slate-200 dark:bg-[#482329] text-primary flex items-center justify-center font-bold text-sm overflow-hidden">
+                          {{ getInitials(inquiry.buyer_name) }}
+                        </div>
+                        <div>
+                          <div class="font-bold text-slate-900 dark:text-white">{{ inquiry.buyer_name }}</div>
+                          <div class="text-xs text-slate-500 dark:text-[#c9929b]">{{ inquiry.motorcycle_title }}</div>
+                        </div>
+                      </div>
+                      <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
+                        [ngClass]="{
+                          'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500 border border-amber-200 dark:border-amber-800': inquiry.status === 'Pending',
+                          'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-500 border border-emerald-200 dark:border-emerald-800': inquiry.status === 'Approved',
+                          'bg-slate-100 dark:bg-[#381a1f] text-slate-600 dark:text-[#c9929b] border border-slate-200 dark:border-[#482329]': inquiry.status === 'Rejected'
+                        }">
+                        {{ inquiry.status }}
+                      </span>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-[#381a1f] p-3 rounded-lg border border-slate-100 dark:border-[#482329]">
+                      <p class="text-sm text-slate-600 dark:text-[#c9929b] italic">"{{ inquiry.message }}"</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3" *ngIf="inquiry.status === 'Pending'">
+                      <button (click)="rejectInquiry(inquiry.id)" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] text-sm font-bold transition-all hover:bg-slate-100 dark:hover:bg-[#482329]">
+                        <span class="material-symbols-outlined text-[18px]">close</span> Reject
+                      </button>
+                      <button (click)="approveInquiry(inquiry.id)" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary hover:bg-red-700 text-white text-sm font-bold transition-all">
+                        <span class="material-symbols-outlined text-[18px]">check</span> Approve
+                      </button>
+                    </div>
+                    <button *ngIf="inquiry.status === 'Approved'" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-primary/30 text-primary bg-primary/5 hover:bg-primary/10 text-sm font-bold transition-all">
+                      <span class="material-symbols-outlined text-[18px]">chat</span> View Contact
+                    </button>
+                  </div>
+                </ng-container>
+                <ng-template #noMobileInquiries>
+                  <p class="p-6 text-center text-slate-500 dark:text-[#c9929b]">No inquiries found.</p>
+                </ng-template>
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="flex items-center justify-center md:justify-end gap-2 py-4">
+              <button class="size-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#482329] text-slate-500 dark:text-[#c9929b] hover:bg-slate-100 dark:hover:bg-[#482329] disabled:opacity-50" disabled>
+                <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+              </button>
+              <button class="size-9 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm shadow-md shadow-primary/20">1</button>
+              <button class="size-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-100 dark:hover:bg-[#482329] font-medium text-sm">2</button>
+              <button class="size-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] hover:bg-slate-100 dark:hover:bg-[#482329] font-medium text-sm">3</button>
+              <span class="text-slate-400 dark:text-[#c9929b] px-1">...</span>
+              <button class="size-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#482329] text-slate-500 dark:text-[#c9929b] hover:bg-slate-100 dark:hover:bg-[#482329]">
+                <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+              </button>
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Create Listing Modal -->
+<div *ngIf="showCreateModal" class="fixed inset-0 z-50 flex items-center justify-center">
+  <div class="absolute inset-0 bg-black/60" (click)="closeCreateModal()"></div>
+  <div
+    class="relative w-full max-w-2xl mx-4 bg-white dark:bg-[#2d1519] border border-slate-200 dark:border-[#482329] rounded-2xl shadow-2xl overflow-hidden">
+    <div class="p-6 border-b border-slate-200 dark:border-[#482329] flex items-center justify-between">
+      <div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Add New Motorcycle</h3>
+        <p class="text-sm text-slate-500 dark:text-[#c9929b]">Create a new listing for your garage.</p>
+      </div>
+      <button
+        type="button"
+        class="size-9 rounded-full bg-slate-100 dark:bg-[#482329] text-slate-500 dark:text-[#c9929b] hover:text-white hover:bg-primary transition-colors flex items-center justify-center"
+        (click)="closeCreateModal()">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="submitCreate()" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngIf="createError" class="md:col-span-2 text-sm text-red-500">
+        {{ createError }}
+      </div>
+      <label class="flex flex-col gap-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Title</span>
+        <input
+          formControlName="title"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary"
+          placeholder="2024 Ducati Panigale V4 S" />
+      </label>
+      <label class="flex flex-col gap-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Brand</span>
+        <input
+          formControlName="brand"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary"
+          placeholder="Ducati" />
+      </label>
+      <label class="flex flex-col gap-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Price</span>
+        <input
+          type="number"
+          formControlName="price"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary"
+          placeholder="24500" />
+      </label>
+      <label class="flex flex-col gap-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Year</span>
+        <input
+          type="number"
+          formControlName="year"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary"
+          placeholder="2024" />
+      </label>
+      <label class="flex flex-col gap-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Engine Size</span>
+        <input
+          formControlName="engine_size"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary"
+          placeholder="1103cc" />
+      </label>
+      <label class="flex flex-col gap-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Condition</span>
+        <select
+          formControlName="condition"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary">
+          <option value="New">New</option>
+          <option value="Used">Used</option>
+        </select>
+      </label>
+      <label class="flex flex-col gap-2 md:col-span-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Image</span>
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onImageSelected($event)"
+          required
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary" />
+      </label>
+      <label class="flex flex-col gap-2 md:col-span-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Description</span>
+        <textarea
+          formControlName="description"
+          rows="4"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary"
+          placeholder="Describe the bike..."></textarea>
+      </label>
+      <div class="md:col-span-2 flex items-center justify-end gap-3 pt-2">
+        <button
+          type="button"
+          class="px-5 py-2.5 rounded-lg border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] hover:text-white hover:bg-[#482329] transition-colors"
+          (click)="closeCreateModal()">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2.5 rounded-lg bg-primary text-white font-bold hover:bg-red-700 transition-colors">
+          Create Listing
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Listing Modal -->
+<div *ngIf="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center">
+  <div class="absolute inset-0 bg-black/60" (click)="closeEditModal()"></div>
+  <div
+    class="relative w-full max-w-2xl mx-4 bg-white dark:bg-[#2d1519] border border-slate-200 dark:border-[#482329] rounded-2xl shadow-2xl overflow-hidden">
+    <div class="p-6 border-b border-slate-200 dark:border-[#482329] flex items-center justify-between">
+      <div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Edit Motorcycle</h3>
+        <p class="text-sm text-slate-500 dark:text-[#c9929b]">Update listing details.</p>
+      </div>
+      <button
+        type="button"
+        class="size-9 rounded-full bg-slate-100 dark:bg-[#482329] text-slate-500 dark:text-[#c9929b] hover:text-white hover:bg-primary transition-colors flex items-center justify-center"
+        (click)="closeEditModal()">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form [formGroup]="editForm" (ngSubmit)="submitEdit()" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngIf="editError" class="md:col-span-2 text-sm text-red-500">
+        {{ editError }}
+      </div>
+      <label class="flex flex-col gap-2 md:col-span-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Title</span>
+        <input
+          formControlName="title"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary" />
+      </label>
+      <label class="flex flex-col gap-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Price</span>
+        <input
+          type="number"
+          formControlName="price"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary" />
+      </label>
+      <label class="flex flex-col gap-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Status</span>
+        <select
+          formControlName="status"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary">
+          <option value="Available">Available</option>
+          <option value="Sold">Sold</option>
+        </select>
+      </label>
+      <label class="flex flex-col gap-2 md:col-span-2">
+        <span class="text-xs font-bold uppercase text-slate-500 dark:text-[#c9929b]">Description</span>
+        <textarea
+          formControlName="description"
+          rows="4"
+          class="w-full rounded-lg bg-slate-100 dark:bg-[#482329] text-slate-900 dark:text-white px-3 py-2.5 border border-transparent focus:ring-2 focus:ring-primary"></textarea>
+      </label>
+      <div class="md:col-span-2 flex items-center justify-end gap-3 pt-2">
+        <button
+          type="button"
+          class="px-5 py-2.5 rounded-lg border border-slate-200 dark:border-[#482329] text-slate-600 dark:text-[#c9929b] hover:text-white hover:bg-[#482329] transition-colors"
+          (click)="closeEditModal()">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2.5 rounded-lg bg-primary text-white font-bold hover:bg-red-700 transition-colors">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

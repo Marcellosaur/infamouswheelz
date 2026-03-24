@@ -1,0 +1,273 @@
+<div
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark bg-background-dark/95 backdrop-blur px-6 lg:px-10 py-3 fixed top-0 w-full z-50">
+        <div class="flex items-center gap-4 text-white">
+            <a routerLink="/">
+                <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Infamous<span
+                        class="text-primary text-xl font-bold leading-tight tracking-[-0.015em">Wheelz</span>
+                </h2>
+            </a>
+
+        </div>
+
+        <div class="md:hidden text-white cursor-pointer">
+            <span class="material-symbols-outlined">menu</span>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center p-4 pt-24 pb-12 relative overflow-hidden">
+        <!-- Background Decor -->
+        <div class="absolute inset-0 z-0 opacity-20 pointer-events-none"
+            style="background-image: radial-gradient(circle at 50% 50%, #d41132 0%, transparent 40%);"></div>
+        <!-- Auth Card Container -->
+        <div
+            class="relative z-10 w-full max-w-6xl bg-surface-dark rounded-2xl shadow-2xl overflow-hidden border border-border-dark grid grid-cols-1 lg:grid-cols-12 min-h-[700px]">
+            <!-- Left Pane: Visuals -->
+            <div class="lg:col-span-5 relative hidden lg:flex flex-col justify-end p-10 bg-cover bg-center"
+                data-alt="Dark aesthetic motorcycle closeup with red lighting highlights"
+                style="background-image: linear-gradient(180deg, rgba(34,16,19,0) 0%, rgba(34,16,19,0.9) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXapfHjV90kehf6LSyZphG2ikM8C9hi-7tEeGomcnoEpC6iuKfEdmM46Pq1tlVSSrhyGlDPXMldjuzJ1dXghLG3AynJ9A0NDcednxUU4eY1MR51Yev5dCLYFTEWg_u5Qdq8Qa-TYbIp6Rt1aZ6axVDhOuR-Mmp59YhsRiWcA0XBeU8tyrfmKDh801mpNL8HW32pI6U5SdXP7wKWpnkoqa06JoyslwM69nJLH1B58gMnUccoYtASpNsTpmrQKOmCadszB1b-_HQU3ou');">
+                <div class="absolute inset-0 bg-primary/10 mix-blend-overlay"></div>
+                <div class="relative z-10 space-y-4">
+                    <div
+                        class="inline-flex items-center justify-center p-2 rounded-lg bg-primary/20 backdrop-blur-sm border border-primary/30 text-primary mb-2">
+                        <span class="material-symbols-outlined">two_wheeler</span>
+                    </div>
+                    <h1 class="text-4xl font-bold text-white tracking-tight">Ride Your Legacy.</h1>
+                    <p class="text-gray-300 text-lg">Join the premier marketplace for buying, selling, and trading
+                        high-performance machines.</p>
+                    <div class="flex gap-2 mt-4">
+                        <div class="h-1 w-8 bg-primary rounded-full"></div>
+                        <div class="h-1 w-2 bg-gray-600 rounded-full"></div>
+                        <div class="h-1 w-2 bg-gray-600 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Pane: Form -->
+            <div class="lg:col-span-7 p-6 md:p-12 flex flex-col h-full bg-surface-dark">
+                <!-- Tab Switcher (Segmented Control) -->
+                <div class="flex justify-center mb-8">
+                    <div class="bg-surface-light p-1 rounded-xl inline-flex w-full max-w-sm border border-border-dark">
+                        <label
+                            class="cursor-pointer flex-1 text-center py-2.5 px-6 rounded-lg text-sm font-medium transition-all"
+                            [ngClass]="authMode === 'login' ? 'bg-primary text-white shadow-lg shadow-primary/25' : 'text-gray-400 hover:text-white'">
+                            <input class="hidden peer" name="auth_mode" type="radio" value="login"
+                                [checked]="authMode === 'login'" (change)="setAuthMode('login')" />
+                            <span>Log In</span>
+                        </label>
+                        <label
+                            class="cursor-pointer flex-1 text-center py-2.5 px-6 rounded-lg text-sm font-medium transition-all"
+                            [ngClass]="authMode === 'register' ? 'bg-primary text-white shadow-lg shadow-primary/25' : 'text-gray-400 hover:text-white'">
+                            <input class="hidden peer" name="auth_mode" type="radio" value="register"
+                                [checked]="authMode === 'register'" (change)="setAuthMode('register')" />
+                            <span>Register</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="max-w-md mx-auto w-full flex-1 flex flex-col justify-center">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-white mb-2">
+                            {{ authMode === 'login' ? 'Welcome back' : 'Create an account' }}
+                        </h2>
+                        <p class="text-gray-400">
+                            {{ authMode === 'login'
+                            ? 'Log in to continue exploring InfamousWheelz.'
+                            : 'Enter your details to get started with InfamousWheelz.' }}
+                        </p>
+                    </div>
+                    <!-- Social Login -->
+
+                    <div class="relative flex py-2 items-center mb-6">
+                        <div class="flex-grow border-t border-border-dark"></div>
+
+                        <div class="flex-grow border-t border-border-dark"></div>
+                    </div>
+                    <!-- Registration Form -->
+                    <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+                        <!-- Role Selector -->
+                        <div *ngIf="authMode === 'register'" class="grid grid-cols-2 gap-4 mb-6">
+                            <label class="relative cursor-pointer group">
+                                <input class="peer sr-only" formControlName="role" name="role" type="radio"
+                                    value="buyer" />
+                                <div
+                                    class="p-4 rounded-xl border border-border-dark bg-surface-light peer-checked:border-primary peer-checked:bg-primary/10 transition-all group-hover:border-gray-500 flex flex-col items-center gap-2">
+                                    <span
+                                        class="material-symbols-outlined text-gray-400 peer-checked:text-primary">shopping_bag</span>
+                                    <span class="text-sm font-medium text-gray-300 peer-checked:text-white">I want to
+                                        Buy</span>
+                                </div>
+                                <div
+                                    class="absolute top-2 right-2 w-4 h-4 rounded-full border border-gray-500 peer-checked:border-primary peer-checked:bg-primary">
+                                </div>
+                            </label>
+                            <label class="relative cursor-pointer group">
+                                <input class="peer sr-only" formControlName="role" name="role" type="radio"
+                                    value="seller" />
+                                <div
+                                    class="p-4 rounded-xl border border-border-dark bg-surface-light peer-checked:border-primary peer-checked:bg-primary/10 transition-all group-hover:border-gray-500 flex flex-col items-center gap-2">
+                                    <span
+                                        class="material-symbols-outlined text-gray-400 peer-checked:text-primary">sell</span>
+                                    <span class="text-sm font-medium text-gray-300 peer-checked:text-white">I want to
+                                        Sell</span>
+                                </div>
+                                <div
+                                    class="absolute top-2 right-2 w-4 h-4 rounded-full border border-gray-500 peer-checked:border-primary peer-checked:bg-primary">
+                                </div>
+                            </label>
+                        </div>
+                        <!-- Full Name -->
+                        <div *ngIf="authMode === 'register'">
+                            <label class="block text-sm font-medium text-gray-300 mb-1.5" for="name">Full Name</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                    <span class="material-symbols-outlined text-[20px]">person</span>
+                                </div>
+                                <input
+                                    class="block w-full pl-10 pr-3 py-3 rounded-lg bg-surface-light border border-border-dark text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm"
+                                    formControlName="name" id="name" placeholder="John Doe" type="text" />
+                            </div>
+                        </div>
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1.5" for="email">Email
+                                Address</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                    <span class="material-symbols-outlined text-[20px]">mail</span>
+                                </div>
+                                <input
+                                    class="block w-full pl-10 pr-3 py-3 rounded-lg bg-surface-light border border-border-dark text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm"
+                                    formControlName="email" id="email" placeholder="john@example.com" type="email" />
+                            </div>
+                        </div>
+                        <!-- Password Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1.5"
+                                    for="password">Password</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                        <span class="material-symbols-outlined text-[20px]">lock</span>
+                                    </div>
+                                    <input
+                                        class="block w-full pl-10 pr-10 py-3 rounded-lg bg-surface-light border border-border-dark text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm"
+                                        formControlName="password" id="password" placeholder="••••••••"
+                                        type="password" />
+                                    <button
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white"
+                                        type="button">
+                                        <span class="material-symbols-outlined text-[20px]">visibility_off</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div *ngIf="authMode === 'register'">
+                                <label class="block text-sm font-medium text-gray-300 mb-1.5"
+                                    for="confirm_password">Confirm</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                        <span class="material-symbols-outlined text-[20px]">lock_reset</span>
+                                    </div>
+                                    <input
+                                        class="block w-full pl-10 pr-3 py-3 rounded-lg bg-surface-light border border-border-dark text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm"
+                                        formControlName="confirmPassword" id="confirm_password" placeholder="••••••••"
+                                        type="password" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Terms -->
+                        <div *ngIf="authMode === 'register'" class="flex items-start mt-4">
+                            <div class="flex items-center h-5">
+                                <input
+                                    class="w-4 h-4 rounded border-gray-600 bg-surface-light text-primary focus:ring-primary focus:ring-offset-background-dark"
+                                    formControlName="terms" id="terms" type="checkbox" />
+                            </div>
+                            <div class="ml-2 text-sm">
+                                <button type="button" class="text-primary hover:underline" (click)="openModal('terms')">
+                                    Terms of Service
+                                </button>
+
+                                <a class="mx-1">and</a>
+
+                                <button type="button" class="text-primary hover:underline"
+                                    (click)="openModal('privacy')">
+                                    Privacy Policy
+                                </button>
+                                <!-- <label class="font-medium text-gray-400" for="terms">I agree to the <a
+                                        class="text-primary hover:text-primary-hover hover:underline" href="#">Terms of
+                                        Service</a> and <a class="text-primary hover:text-primary-hover hover:underline"
+                                        href="#">Privacy Policy</a></label> -->
+                            </div>
+                        </div>
+                        <!-- Error Toast -->
+                        <div *ngIf="authError"
+                            class="flex items-center gap-3 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 mt-2 animate-pulse-once">
+                            <span class="material-symbols-outlined text-primary shrink-0 text-[20px]">error</span>
+                            <p class="text-sm text-red-300 font-medium flex-1">{{ authError }}</p>
+                            <button type="button" (click)="authError = null"
+                                class="text-red-400 hover:text-white transition-colors shrink-0">
+                                <span class="material-symbols-outlined text-[18px]">close</span>
+                            </button>
+                        </div>
+                        <!-- Submit Button -->
+                        <button
+                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-primary transition-all mt-6"
+                            type="submit">
+                            {{ authMode === 'login' ? 'Log In' : 'Create Account' }}
+                        </button>
+                    </form>
+                    <p class="mt-6 text-center text-sm text-gray-400">
+                        {{ authMode === 'login' ? "Don't have an account?" : 'Already have an account?' }}
+                        <button class="font-semibold text-primary hover:text-white transition-colors" type="button"
+                            (click)="setAuthMode(authMode === 'login' ? 'register' : 'login')">
+                            {{ authMode === 'login' ? 'Register here' : 'Sign in here' }}
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <app-modal
+  [(open)]="modalOpen"
+  [title]="modalType === 'terms' ? 'Terms of Service' : 'Privacy Policy'"
+>
+  <!-- Terms -->
+  <ng-container *ngIf="modalType === 'terms'">
+    <p>
+      By using InfamousWheelz, you agree to comply with all applicable laws
+      and regulations. You must provide accurate information during
+      registration.
+    </p>
+
+    <p>
+      Listings must be genuine. Fraudulent activity will result in
+      account suspension or termination.
+    </p>
+  </ng-container>
+
+  <!-- Privacy -->
+  <ng-container *ngIf="modalType === 'privacy'">
+    <p>
+      We collect personal information such as name and email solely
+      for account management and platform functionality.
+    </p>
+
+    <p>
+      Your data is never sold to third parties and is stored securely.
+    </p>
+  </ng-container>
+</app-modal>
+
+
+    <!-- Footer Simple -->
+    <footer class="py-6 border-t border-border-dark bg-background-dark text-center">
+        <p class="text-xs text-gray-500">© 2026 InfamousWheelz Inc. All rights reserved.</p>
+    </footer>
+</div>
+
+

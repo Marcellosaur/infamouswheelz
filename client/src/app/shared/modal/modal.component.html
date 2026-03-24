@@ -1,0 +1,31 @@
+<div *ngIf="open" class="fixed inset-0 z-50 flex items-center justify-center">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" (click)="close()"></div>
+
+    <!-- Modal -->
+    <div class="relative z-10 w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-2xl bg-surface-dark border border-border-dark shadow-2xl p-6"
+        role="dialog" aria-modal="true">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-white">
+                {{ title }}
+            </h2>
+            <button type="button" class="text-gray-400 hover:text-white" (click)="close()" aria-label="Close dialog">
+                ✕
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="text-gray-300 text-sm space-y-4">
+            <ng-content></ng-content>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-6 text-right">
+            <button type="button" class="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-hover"
+                (click)="close()">
+                Close
+            </button>
+        </div>
+    </div>
+</div>

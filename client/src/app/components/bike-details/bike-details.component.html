@@ -1,0 +1,359 @@
+
+
+<div
+    *ngIf="bike as b; else loading"
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col font-display selection:bg-primary selection:text-white">
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-50 w-full border-b border-[#482329] bg-[#221013]/95 backdrop-blur-sm">
+        <div class="flex items-center justify-between px-6 py-3 lg:px-10 max-w-[1440px] mx-auto w-full">
+            <div class="flex items-center gap-8">
+                <a class="flex items-center gap-3 text-white hover:opacity-80 transition-opacity" href="#">
+                   
+                    <div class="flex items-center gap-4 text-white cursor-pointer">
+
+                        <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Infamous<span
+                                class="text-primary text-xl font-bold leading-tight tracking-[-0.015em">Wheelz</span></h2>
+                    </div>
+                </a>
+                <nav class="hidden md:flex flex-1 justify-center gap-8">
+                    <a class="text-white text-sm font-medium hover:text-primary transition-colors"
+                        routerLink="/garage">Garage</a>                  
+                </nav>
+            </div>
+            <div class="flex flex-1 justify-end gap-4 items-center">
+                <!-- Guest buttons -->
+                <ng-container *ngIf="!isLoggedIn">
+                    <a routerLink="/login">
+                        <button
+                            class="hidden md:flex items-center justify-center rounded-lg h-10 px-6 bg-surface-dark border border-surface-border hover:border-primary text-white text-sm font-bold transition-all">
+                            Sign In
+                        </button>
+                    </a>
+                    <a routerLink="/register">
+                        <button
+                            class="hidden md:flex items-center justify-center rounded-lg h-10 px-6 bg-primary hover:bg-red-700 text-white text-sm font-bold shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5">
+                            List a Bike
+                        </button>
+                    </a>
+                </ng-container>
+                <!-- Logged-in: profile icon -->
+                <button
+                    *ngIf="isLoggedIn"
+                    (click)="goToDashboard()"
+                    title="Go to Dashboard"
+                    class="flex items-center justify-center size-10 rounded-full bg-surface-dark border border-[#482329] hover:border-primary hover:text-primary text-white transition-all">
+                    <span class="material-symbols-outlined text-[22px]">account_circle</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main class="flex-grow w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12">
+            <!-- Left Column: Gallery & Details (8 Cols) -->
+            <div class="lg:col-span-8 flex flex-col gap-10">
+                <!-- Gallery Section -->
+                <div class="flex flex-col gap-4">
+                    <!-- Main Image -->
+                    <div
+                        class="relative w-full aspect-[16/10] bg-surface-dark rounded-xl overflow-hidden shadow-2xl border border-white/5 group">
+                        <div class="absolute top-4 left-4 z-10">
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-md px-3 py-1.5 text-xs font-bold text-white uppercase tracking-wider border border-white/10">
+                                <span class="material-symbols-outlined text-[16px]">photo_camera</span>
+                                1/12
+                            </span>
+                        </div>
+                        <div
+                            class="w-full h-full bg-cover bg-center transform group-hover:scale-105 transition-transform duration-700 ease-in-out"
+                            data-alt="Motorcycle image"
+                            [ngStyle]="{ 'background-image': 'url(' + resolveImageUrl(b) + ')' }">
+                        </div>
+                        <!-- Image Navigation Overlay -->
+                        <button
+                            class="absolute left-4 top-1/2 -translate-y-1/2 size-10 rounded-full bg-black/50 backdrop-blur text-white flex items-center justify-center hover:bg-primary transition-colors">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <button
+                            class="absolute right-4 top-1/2 -translate-y-1/2 size-10 rounded-full bg-black/50 backdrop-blur text-white flex items-center justify-center hover:bg-primary transition-colors">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+                    <!-- Thumbnails -->
+                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+                        <button
+                            class="relative flex-none w-24 h-16 rounded-lg overflow-hidden border-2 border-primary ring-2 ring-primary/30">
+                            <div class="w-full h-full bg-cover bg-center" data-alt="Motorcycle image"
+                                [ngStyle]="{ 'background-image': 'url(' + resolveImageUrl(b) + ')' }">
+                            </div>
+                        </button>
+                        <button
+                            class="relative flex-none w-24 h-16 rounded-lg overflow-hidden border border-white/10 hover:border-white/50 opacity-70 hover:opacity-100 transition-all">
+                            <div class="w-full h-full bg-cover bg-center" data-alt="Motorcycle image"
+                                [ngStyle]="{ 'background-image': 'url(' + resolveImageUrl(b) + ')' }">
+                            </div>
+                        </button>
+                        <button
+                            class="relative flex-none w-24 h-16 rounded-lg overflow-hidden border border-white/10 hover:border-white/50 opacity-70 hover:opacity-100 transition-all">
+                            <div class="w-full h-full bg-cover bg-center" data-alt="Motorcycle image"
+                                [ngStyle]="{ 'background-image': 'url(' + resolveImageUrl(b) + ')' }">
+                            </div>
+                        </button>
+                        <button
+                            class="relative flex-none w-24 h-16 rounded-lg overflow-hidden border border-white/10 hover:border-white/50 opacity-70 hover:opacity-100 transition-all">
+                            <div class="w-full h-full bg-cover bg-center" data-alt="Motorcycle image"
+                                [ngStyle]="{ 'background-image': 'url(' + resolveImageUrl(b) + ')' }">
+                            </div>
+                        </button>
+                        <button
+                            class="relative flex-none w-24 h-16 rounded-lg overflow-hidden border border-white/10 hover:border-white/50 opacity-70 hover:opacity-100 transition-all flex items-center justify-center bg-surface-dark">
+                            <span class="text-xs font-bold text-white">+8</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Tabs & Content -->
+                <div class="flex flex-col gap-6">
+                    <div class="border-b border-white/10 flex gap-8">
+                        <button
+                            class="pb-4 text-primary font-bold border-b-2 border-primary text-base">Description</button>
+                        <button
+                            class="pb-4 text-[#c9929b] hover:text-white font-medium text-base transition-colors">Full
+                            Specs</button>
+                        <button
+                            class="pb-4 text-[#c9929b] hover:text-white font-medium text-base transition-colors">Vehicle
+                            History</button>
+                    </div>
+                    <div class="prose prose-invert max-w-none text-[#c9929b] leading-relaxed">
+                        <p class="mb-4">
+                            {{ b.description }}
+                        </p>
+                    </div>
+                    <!-- Features Grid -->
+                    <div class="bg-surface-dark rounded-xl p-6 border border-white/5 mt-4">
+                        <h3 class="text-white font-bold text-lg mb-4">Key Features</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary">speed</span>
+                                <span class="text-gray-300 text-sm">Cornering ABS EVO</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary">settings_input_component</span>
+                                <span class="text-gray-300 text-sm">Ducati Traction Control (DTC) EVO 3</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary">bolt</span>
+                                <span class="text-gray-300 text-sm">Ducati Quick Shift (DQS) up/down EVO 2</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary">tune</span>
+                                <span class="text-gray-300 text-sm">Engine Brake Control (EBC) EVO</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Column: Sticky Sidebar (4 Cols) -->
+            <div class="lg:col-span-4 relative">
+                <div class="sticky top-28 flex flex-col gap-6">
+                    <!-- Main Info Card -->
+                    <div class="bg-surface-dark rounded-xl p-6 border border-white/10 shadow-xl">
+                        <!-- Status & Meta -->
+                        <div class="flex justify-between items-start mb-4">
+                            <div
+                                class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 border border-emerald-500/20">
+                                <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span
+                                    class="text-xs font-bold text-emerald-400 uppercase tracking-wide">Available</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="size-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors"
+                                    title="Share">
+                                    <span class="material-symbols-outlined text-[18px]">share</span>
+                                </button>
+                                <button
+                                    class="size-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors"
+                                    title="Report">
+                                    <span class="material-symbols-outlined text-[18px]">flag</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Title & Price -->
+                        <h1 class="text-3xl font-extrabold text-white leading-tight mb-2">{{ b.title }}</h1>
+                        <p class="text-sm text-[#c9929b] font-medium mb-4">{{ b.brand }}</p>
+                        <div class="flex items-baseline gap-2 mb-6">
+                            <span class="text-4xl font-black text-primary tracking-tight">${{ b.price }}</span>
+                            <span class="text-sm text-gray-400 font-medium">USD</span>
+                        </div>
+                        <!-- Quick Specs Grid -->
+                        <div class="grid grid-cols-2 gap-3 mb-8">
+                            <div class="bg-background-dark rounded-lg p-3 border border-white/5 flex flex-col gap-1">
+                                <div class="flex items-center gap-2 text-[#c9929b]">
+                                    <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                                    <span class="text-xs font-medium uppercase">Year</span>
+                                </div>
+                                <span class="text-white font-bold text-lg">{{ b.year }}</span>
+                            </div>
+                            <div class="bg-background-dark rounded-lg p-3 border border-white/5 flex flex-col gap-1">
+                                <div class="flex items-center gap-2 text-[#c9929b]">
+                                    <span class="material-symbols-outlined text-[18px]">speed</span>
+                                    <span class="text-xs font-medium uppercase">Mileage</span>
+                                </div>
+                                <span class="text-white font-bold text-lg">1,240 mi</span>
+                            </div>
+                            <div class="bg-background-dark rounded-lg p-3 border border-white/5 flex flex-col gap-1">
+                                <div class="flex items-center gap-2 text-[#c9929b]">
+                                    <span class="material-symbols-outlined text-[18px]">local_gas_station</span>
+                                    <span class="text-xs font-medium uppercase">Engine</span>
+                                </div>
+                                <span class="text-white font-bold text-lg">{{ b.engine_size }}</span>
+                            </div>
+                            <div class="bg-background-dark rounded-lg p-3 border border-white/5 flex flex-col gap-1">
+                                <div class="flex items-center gap-2 text-[#c9929b]">
+                                    <span class="material-symbols-outlined text-[18px]">verified</span>
+                                    <span class="text-xs font-medium uppercase">Condition</span>
+                                </div>
+                                <span class="text-white font-bold text-lg">{{ b.condition }}</span>
+                            </div>
+                        </div>
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col gap-3">
+                            <button
+                                (click)="openInquiryModal()"
+                                class="w-full h-12 rounded-lg bg-primary hover:bg-red-700 text-white font-bold text-base shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
+                                <span class="material-symbols-outlined">mail</span>
+                                Send Inquiry
+                            </button>
+                            <button
+                                (click)="toggleFavorite()"
+                                [disabled]="isToggling"
+                                class="w-full h-12 rounded-lg bg-transparent border text-white font-bold text-base transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+                                [ngClass]="{
+                                  'border-primary bg-primary/10 hover:bg-primary/20': isFavorited,
+                                  'border-white/20 hover:border-white/50 hover:bg-white/5': !isFavorited
+                                }">
+                                <span *ngIf="!isToggling" class="material-symbols-outlined"
+                                  [style.fontVariationSettings]="isFavorited ? '\'FILL\' 1' : '\'FILL\' 0'"
+                                  [class.text-primary]="isFavorited">
+                                  favorite
+                                </span>
+                                <span *ngIf="isToggling" class="material-symbols-outlined animate-spin">progress_activity</span>
+                                {{ isFavorited ? 'Saved to Favorites' : 'Save to Favorites' }}
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Seller Card -->
+                    <div class="bg-surface-dark rounded-xl p-6 border border-white/10">
+                        <h3 class="text-xs font-bold text-[#c9929b] uppercase tracking-wider mb-4">Seller Information
+                        </h3>
+
+                        <!-- Loading skeleton -->
+                        <ng-container *ngIf="!seller">
+                            <div class="flex items-center gap-4 mb-5 animate-pulse">
+                                <div class="size-14 rounded-full bg-white/10 flex-shrink-0"></div>
+                                <div class="flex flex-col gap-2 flex-1">
+                                    <div class="h-4 bg-white/10 rounded w-3/4"></div>
+                                    <div class="h-3 bg-white/10 rounded w-1/2"></div>
+                                </div>
+                            </div>
+                            <div class="h-3 bg-white/10 rounded w-1/3 animate-pulse"></div>
+                        </ng-container>
+
+                        <!-- Real seller data -->
+                        <ng-container *ngIf="seller">
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="relative flex-shrink-0">
+                                    <!-- Initials avatar (no profile photo in DB) -->
+                                    <div class="size-14 rounded-full bg-gradient-to-br from-primary/60 to-primary overflow-hidden border-2 border-white/10 flex items-center justify-center">
+                                        <span class="text-white font-black text-xl leading-none select-none">
+                                            {{ seller.name.charAt(0).toUpperCase() }}
+                                        </span>
+                                    </div>
+                                    <div
+                                        class="absolute -bottom-1 -right-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded border border-surface-dark">
+                                        SELLER</div>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold text-lg leading-tight">{{ seller.name }}</h4>
+                                    <div class="flex items-center gap-1 mt-1">
+                                        <span class="material-symbols-outlined text-[#c9929b] text-[16px]">verified</span>
+                                        <span class="text-[#c9929b] text-sm">Verified Seller</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-white/5 flex justify-between text-xs text-gray-400">
+                                <span>Member since {{ memberSince(seller.created_at) }}</span>
+                                <span class="text-emerald-400">Active Seller</span>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <!-- Safety Tip -->
+                    <div class="rounded-xl p-4 bg-primary/10 border border-primary/20 flex gap-3">
+                        <span class="material-symbols-outlined text-primary shrink-0">shield</span>
+                        <div>
+                            <h4 class="text-white font-bold text-sm mb-1">Buy with Confidence</h4>
+                            <p class="text-xs text-gray-400 leading-relaxed">InfamousWheelz protects your payments.
+                                Never transfer money outside the platform.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Simple Footer for Context -->
+    <footer class="mt-20 border-t border-[#482329] bg-[#1a0c0f] py-12">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2 text-white/50 text-sm">
+                <span>© 2024 InfamousWheelz Inc.</span>
+            </div>
+            <div class="flex gap-6 text-white/50 text-sm">
+                <a class="hover:text-white transition-colors" href="#">Privacy</a>
+                <a class="hover:text-white transition-colors" href="#">Terms</a>
+                <a class="hover:text-white transition-colors" href="#">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Inquiry Modal -->
+    <div *ngIf="showInquiryModal" class="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm">
+        <div class="bg-surface-dark w-full max-w-md rounded-2xl border border-white/10 shadow-2xl p-6 relative">
+            <button (click)="closeInquiryModal()" class="absolute right-4 top-4 text-gray-400 hover:text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="text-xl font-bold text-white mb-2">Send Inquiry</h3>
+            <p class="text-sm text-[#c9929b] mb-6">Ask the seller about the {{ b.year }} {{ b.brand }} {{ b.title }}.</p>
+            
+            <div *ngIf="inquiryStatus === 'success'" class="mb-4 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex gap-3 text-emerald-400">
+                <span class="material-symbols-outlined shrink-0 text-emerald-400">check_circle</span>
+                <p class="text-sm">Inquiry sent successfully! The seller will contact you soon.</p>
+            </div>
+
+            <div *ngIf="inquiryStatus === 'error'" class="mb-4 p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex gap-3 text-red-500">
+                <span class="material-symbols-outlined shrink-0">error</span>
+                <p class="text-sm">{{ inquiryErrorMessage }}</p>
+            </div>
+
+            <ng-container *ngIf="inquiryStatus !== 'success'">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gray-300 mb-2">Your Message</label>
+                    <textarea #messageInput (input)="0" class="w-full h-32 px-4 py-3 bg-background-dark border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none" placeholder="I'm interested in this motorcycle. Is it still available?"></textarea>
+                </div>
+                <div class="flex gap-3 justify-end mt-6">
+                    <button (click)="closeInquiryModal()" class="px-5 py-2.5 rounded-lg text-sm font-bold text-gray-300 hover:text-white hover:bg-white/5 transition-all">Cancel</button>
+                    <button [disabled]="inquiryStatus === 'sending' || !messageInput.value.trim()" (click)="sendInquiry(messageInput.value)" class="px-5 py-2.5 rounded-lg text-sm font-bold bg-primary hover:bg-red-700 text-white disabled:opacity-50 transition-all flex items-center gap-2">
+                        <span *ngIf="inquiryStatus === 'sending'" class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+                        {{ inquiryStatus === 'sending' ? 'Sending...' : 'Send Message' }}
+                    </button>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <div class="min-h-screen flex items-center justify-center text-white">
+        <p class="text-lg font-semibold">Loading bike details...</p>
+    </div>
+</ng-template>
+

@@ -1,0 +1,278 @@
+<body
+  class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary selection:text-white">
+  <div class="flex h-screen w-full overflow-hidden">
+    <!-- Side Navigation -->
+    <aside
+      class="hidden w-64 flex-col border-r border-gray-200 dark:border-[#3a1c20] bg-surface-light dark:bg-[#1a0c0e] lg:flex">
+      <div class="flex h-20 items-center gap-3 px-6 border-b border-gray-100 dark:border-[#2a1518]">
+        <div class="flex items-center justify-center size-10 rounded-full bg-primary text-white">
+          <span class="material-symbols-outlined">two_wheeler</span>
+        </div>
+        <div class="flex flex-col">
+          <h1 class="text-lg font-bold leading-none tracking-tight">InfamousWheelz</h1>
+          <span class="text-xs text-primary font-medium tracking-wide uppercase mt-1">Buyer Portal</span>
+        </div>
+      </div>
+      <div class="flex flex-1 flex-col gap-2 overflow-y-auto px-4 py-6">
+        <!-- Navigation Links -->
+        <a class="flex items-center gap-3 rounded-lg bg-primary px-4 py-3 text-white transition-colors" href="#">
+          <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+          <span class="text-sm font-medium">Dashboard</span>
+        </a>
+        <a class="group flex items-center gap-3 rounded-lg px-4 py-3 text-slate-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+          href="#">
+          <span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+          <span class="text-sm font-medium">My Profile</span>
+        </a>
+        
+       
+        <div class="my-2 h-px w-full bg-gray-200 dark:bg-[#3a1c20]"></div>
+        <button type="button"
+          class="group flex items-center gap-3 rounded-lg px-4 py-3 text-slate-500 dark:text-gray-400 hover:bg-red-500/10 hover:text-red-500 transition-colors w-full text-left"
+          (click)="logout()">
+          <span class="material-symbols-outlined">logout</span>
+          <span class="text-sm font-medium">Log Out</span>
+        </button>
+      </div>
+      <!-- User Mini Profile -->
+      <div class="border-t border-gray-200 dark:border-[#3a1c20] p-4">
+        <div class="flex items-center gap-3 rounded-xl bg-gray-50 dark:bg-[#251215] p-3">
+          <div class="h-10 w-10 rounded-full bg-cover bg-center" data-alt="Portrait of a user"
+            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA1-udcZIEanoQlqUX4gisHYzkzm44eme7_UwkGtJETlwgFYFdkAR4GYl81WnqegjYJ_IRqhBdMKx8zNx-Qs4txStNIV1dNQLhLSOk97eRolcivIVma62GS-aQgWrqgluUbKhP1_-8o7xHHExbCw6y1oPP75Cr7alvG0lh5GkfyIUt0ZTYZ6W7wtpU2FnZ0GQOaKkV7mJopzGxLx9HptWcCXu8s2pVIeJGKt5x9ZB510yc8RDp6ZqOB0xQA367uc4_DcNHsb0v1Xgqk');">
+          </div>
+          <div class="flex flex-col overflow-hidden">
+            <span class="truncate text-sm font-bold text-slate-900 dark:text-white">{{ buyerName }}</span>
+            <span class="truncate text-xs text-slate-500 dark:text-gray-400">{{ buyerEmail }}</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex h-full flex-1 flex-col overflow-y-auto">
+      <!-- Mobile Header (Visible only on small screens) -->
+      <header
+        class="flex lg:hidden items-center justify-between p-4 border-b border-gray-200 dark:border-[#3a1c20] bg-surface-light dark:bg-[#1a0c0e]">
+        <div class="flex items-center gap-2">
+          <div class="flex items-center justify-center size-8 rounded-full bg-primary text-white">
+            <span class="material-symbols-outlined text-lg">two_wheeler</span>
+          </div>
+          <span class="font-bold text-lg">InfamousWheelz</span>
+        </div>
+        <button class="text-slate-500 dark:text-white">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </header>
+      <div class="w-full max-w-[1400px] mx-auto p-4 md:p-8 lg:p-12 space-y-8">
+        <!-- Page Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-black tracking-tight mb-2">Welcome back, {{ buyerName }}</h2>
+            <p class="text-slate-500 dark:text-gray-400 text-lg">Here's what's happening in your garage today.</p>
+          </div>
+          <a routerLink="/garage"
+                class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors">
+                <button
+            class="hidden md:flex items-center gap-2 bg-slate-900 dark:bg-white dark:text-black text-white px-5 py-2.5 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity">
+            <span class="material-symbols-outlined text-lg">search</span>
+            Browse Marketplace
+          </button>
+                </a>
+          
+        </div>
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div
+            class="flex flex-col gap-1 rounded-xl border border-gray-200 dark:border-[#3a1c20] bg-surface-light dark:bg-surface-dark p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-slate-500 dark:text-gray-400">Total Favorites</span>
+              <span class="material-symbols-outlined text-primary">favorite</span>
+            </div>
+            <span class="text-3xl font-bold">{{ isLoadingFavorites ? '—' : favoriteBikes.length }}</span>
+            <span class="text-xs text-slate-400 flex items-center gap-1 font-medium mt-1">
+              Saved bikes in your garage
+            </span>
+          </div>
+          <div
+            class="flex flex-col gap-1 rounded-xl border border-gray-200 dark:border-[#3a1c20] bg-surface-light dark:bg-surface-dark p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-slate-500 dark:text-gray-400">Active Inquiries</span>
+              <span class="material-symbols-outlined text-blue-500">chat</span>
+            </div>
+            <span class="text-3xl font-bold">{{ isLoadingInquiries ? '—' : inquiries.length }}</span>
+            <span class="text-xs text-slate-400 flex items-center gap-1 font-medium mt-1">
+              Pending responses
+            </span>
+          </div>
+        </div>
+        <!-- Main Grid Layout -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          <!-- Left Column: Favorites (Span 2) -->
+          <div class="xl:col-span-2 flex flex-col gap-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">garage</span>
+                Your Garage (Favorites)
+              </h3>
+              
+            </div>
+<!-- Loading skeleton -->
+            <div *ngIf="isLoadingFavorites" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div *ngFor="let i of [1,2,3,4]"
+                class="flex flex-col rounded-xl overflow-hidden border border-gray-200 dark:border-[#3a1c20] bg-surface-light dark:bg-surface-dark shadow-sm animate-pulse">
+                <div class="h-48 w-full bg-gray-200 dark:bg-[#2a1215]"></div>
+                <div class="p-4 flex flex-col gap-3">
+                  <div class="h-5 w-3/4 rounded bg-gray-200 dark:bg-[#2a1215]"></div>
+                  <div class="h-4 w-1/2 rounded bg-gray-200 dark:bg-[#2a1215]"></div>
+                  <div class="mt-2 pt-3 border-t border-gray-100 dark:border-white/10 flex justify-between">
+                    <div class="h-6 w-20 rounded bg-gray-200 dark:bg-[#2a1215]"></div>
+                    <div class="h-6 w-24 rounded bg-gray-200 dark:bg-[#2a1215]"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empty state -->
+            <div *ngIf="!isLoadingFavorites && favoriteBikes.length === 0"
+              class="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 dark:border-[#3a1c20] py-16 px-8 text-center gap-4">
+              <span class="material-symbols-outlined text-5xl text-gray-300 dark:text-[#4a242a]">garage</span>
+              <div>
+                <p class="font-bold text-lg text-slate-700 dark:text-gray-200">Your garage is empty</p>
+                <p class="text-sm text-slate-500 dark:text-gray-400 mt-1">Browse the marketplace and heart a bike to save it here.</p>
+              </div>
+            </div>
+
+            <!-- Dynamic favorites grid -->
+            <div *ngIf="!isLoadingFavorites && favoriteBikes.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div *ngFor="let bike of favoriteBikes"
+                class="group relative flex flex-col rounded-xl overflow-hidden border border-gray-200 dark:border-[#3a1c20] bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-all shadow-sm"
+                [class.opacity-50]="removingId === bike.id">
+                <!-- Image -->
+                <div class="relative h-48 w-full bg-gray-800">
+                  <div
+                    class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                    [style.background-image]="'url(' + getImageUrl(bike.image_url) + ')'">
+                  </div>
+                  <!-- Remove from favorites button -->
+                  <div class="absolute top-3 right-3">
+                    <button
+                      (click)="toggleFavorite(bike.id)"
+                      [disabled]="removingId === bike.id"
+                      title="Remove from favorites"
+                      class="flex items-center justify-center size-8 rounded-full bg-primary text-white hover:bg-primary/80 transition-colors disabled:cursor-not-allowed">
+                      <span *ngIf="removingId !== bike.id" class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1">favorite</span>
+                      <span *ngIf="removingId === bike.id" class="material-symbols-outlined text-lg animate-spin">progress_activity</span>
+                    </button>
+                  </div>
+                  <!-- Condition badge -->
+                  <div
+                    class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-white">
+                    {{ bike.condition }}
+                  </div>
+                </div>
+                <!-- Card body -->
+                <div class="p-4 flex flex-col gap-2">
+                  <div>
+                    <h4 class="font-bold text-lg leading-tight">{{ bike.year }} {{ bike.brand }} {{ bike.title }}</h4>
+                    <p class="text-xs font-semibold mt-1 px-2 py-0.5 rounded-full inline-block"
+                      [class.bg-green-500]="bike.status === 'Available'"
+                      [class.bg-gray-400]="bike.status === 'Sold'"
+                      [class.text-white]="true">
+                      {{ bike.status }}
+                    </p>
+                  </div>
+                  <div
+                    class="mt-2 flex items-center justify-between border-t border-gray-100 dark:border-white/10 pt-3">
+                    <span class="text-primary font-black text-xl">${{ bike.price | number }}</span>
+                    <button
+                      class="text-xs font-bold uppercase tracking-wide text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Right Column: Inquiries Table (Span 1 on large, stacks on small) -->
+          <div class="xl:col-span-1 flex flex-col gap-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-500">send</span>
+                Sent Inquiries
+              </h3>
+            </div>
+            <div
+              class="flex flex-col rounded-xl border border-gray-200 dark:border-[#3a1c20] bg-surface-light dark:bg-surface-dark overflow-hidden shadow-sm h-full">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead class="bg-gray-50 dark:bg-[#251215]">
+                    <tr>
+                      <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400">Details</th>
+                      <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400 text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-100 dark:divide-[#3a1c20]">
+
+                    <!-- Loading skeleton rows -->
+                    <ng-container *ngIf="isLoadingInquiries">
+                      <tr *ngFor="let i of [1,2,3]" class="animate-pulse">
+                        <td class="p-4">
+                          <div class="h-4 w-3/4 rounded bg-gray-200 dark:bg-[#2a1215] mb-2"></div>
+                          <div class="h-3 w-1/2 rounded bg-gray-200 dark:bg-[#2a1215]"></div>
+                        </td>
+                        <td class="p-4 text-right">
+                          <div class="h-6 w-20 rounded-full bg-gray-200 dark:bg-[#2a1215] ml-auto"></div>
+                        </td>
+                      </tr>
+                    </ng-container>
+
+                    <!-- Empty state -->
+                    <tr *ngIf="!isLoadingInquiries && inquiries.length === 0">
+                      <td colspan="2" class="p-8 text-center">
+                        <span class="material-symbols-outlined text-4xl text-gray-300 dark:text-[#4a242a] block mb-2">inbox</span>
+                        <p class="text-sm text-slate-500 dark:text-gray-400">No inquiries sent yet.</p>
+                      </td>
+                    </tr>
+
+                    <!-- Dynamic inquiry rows -->
+                    <tr *ngFor="let inq of inquiries"
+                      class="group hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer">
+                      <td class="p-4">
+                        <div class="flex flex-col gap-1">
+                          <span class="font-bold text-slate-900 dark:text-white">
+                            {{ inq.motorcycle_year }} {{ inq.motorcycle_brand }} {{ inq.motorcycle_title }}
+                          </span>
+                          <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-gray-400">
+                            <span class="material-symbols-outlined text-[14px]">person</span>
+                            <span>Seller: {{ inq.seller_name }}</span>
+                          </div>
+                          <p *ngIf="inq.message" class="text-xs text-slate-400 dark:text-gray-500 mt-1 italic truncate max-w-[180px]">
+                            "{{ inq.message }}"
+                          </p>
+                        </div>
+                      </td>
+                      <td class="p-4 text-right align-top">
+                        <span class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold"
+                          [ngClass]="getStatusClasses(inq.status)">
+                          <span class="size-1.5 rounded-full" [ngClass]="getStatusDotClass(inq.status)"></span>
+                          {{ inq.status | titlecase }}
+                        </span>
+                        <div class="mt-2 text-xs text-slate-400">{{ inq.created_at | date:'MMM d, y' }}</div>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="p-4 mt-auto border-t border-gray-100 dark:border-[#3a1c20]">
+                <p class="w-full py-2 text-sm text-center text-slate-500 dark:text-gray-400">
+                  {{ isLoadingInquiries ? 'Loading…' : inquiries.length + ' total inquiries' }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+

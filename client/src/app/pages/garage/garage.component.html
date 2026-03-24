@@ -1,0 +1,280 @@
+<div
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display transition-colors duration-200 min-h-screen flex flex-col">
+    <!-- Top Navbar -->
+    <header
+        class="sticky top-0 z-50 w-full border-b border-[#482329] bg-background-dark/95 backdrop-blur-sm px-4 lg:px-10 py-3">
+        <div class="flex items-center justify-between whitespace-nowrap">
+            <div class="flex items-center gap-4 lg:gap-8">
+                <div class="flex items-center gap-4 text-white cursor-pointer">
+                    <a routerLink="/">
+                        <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Infamous<span
+                                class="text-primary text-xl font-bold leading-tight tracking-[-0.015em">Wheelz</span>
+                        </h2>
+                    </a>
+
+                </div>
+                <!-- Search Bar (Desktop) -->
+                <label class="hidden md:flex flex-col min-w-40 !h-10 w-64 lg:w-96">
+                    <div
+                        class="flex w-full flex-1 items-stretch rounded-lg h-full bg-[#2f1619] border border-transparent focus-within:border-primary transition-colors">
+                        <div class="text-[#c9929b] flex items-center justify-center pl-4 pr-2">
+                            <span class="material-symbols-outlined text-[20px]">search</span>
+                        </div>
+                        <input
+                            class="flex w-full min-w-0 flex-1 bg-transparent text-white focus:outline-0 placeholder:text-[#c9929b] px-2 text-sm font-medium"
+                            placeholder="Search make, model, or keyword..." />
+                    </div>
+                </label>
+            </div>
+            <!-- Right Actions -->
+            <div class="flex gap-3">
+                <!-- Guest buttons -->
+                <ng-container *ngIf="!isLoggedIn">
+                    <a routerLink="/login">
+                        <button
+                            class="flex items-center justify-center rounded-lg h-9 px-4 bg-surface-dark border border-surface-border hover:border-primary text-white text-sm font-bold transition-all">
+                            Sign In
+                        </button>
+                    </a>
+                    <a routerLink="/register">
+                        <button
+                            class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-red-700 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate">List a Bike</span>
+                        </button>
+                    </a>
+                </ng-container>
+                <!-- Logged-in: profile icon -->
+                <button
+                    *ngIf="isLoggedIn"
+                    (click)="goToDashboard()"
+                    title="Go to Dashboard"
+                    class="flex items-center justify-center size-9 rounded-full bg-surface-dark border border-surface-border hover:border-primary hover:text-primary text-white transition-all">
+                    <span class="material-symbols-outlined text-[22px]">account_circle</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="layout-container flex flex-col grow container mx-auto px-4 lg:px-8 py-6 max-w-[1440px]">
+        <!-- Breadcrumbs & Heading -->
+        <div class="flex flex-col gap-2 mb-8">
+            <div class="flex flex-wrap gap-2 text-sm">
+                <a routerLink="/" class="text-[#c9929b] hover:text-primary transition-colors font-medium">Home</a>
+                <span class="text-[#c9929b] font-medium">/</span>
+                <span class="text-white font-medium">Garage</span>
+            </div>
+            <div class="flex flex-wrap justify-between items-end gap-4">
+                <div class="flex flex-col gap-1">
+                    <h1 class="text-white text-3xl md:text-4xl font-black tracking-tight">Browse Inventory</h1>
+                    <p class="text-[#c9929b] text-base md:text-lg">Find your next ride from our curated selection of
+                        premium bikes.</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            <!-- Mobile Filter Toggle -->
+            <button
+                class="lg:hidden w-full flex items-center justify-between bg-[#2f1619] p-4 rounded-lg text-white font-bold mb-4">
+                <span>Filters</span>
+                <span class="material-symbols-outlined">tune</span>
+            </button>
+            <!-- Sidebar Filters -->
+            <aside
+                class="hidden lg:flex flex-col w-72 shrink-0 gap-6 sticky top-24 h-fit max-h-[calc(100vh-8rem)] overflow-y-auto pr-2 custom-scrollbar">
+                <!-- Filter Group: Status -->
+                <div class="flex flex-col gap-3 pb-6 border-b border-[#482329]">
+                    <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-xl">verified</span> Condition
+                    </h3>
+                    <div class="flex flex-col gap-2">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input checked=""
+                                class="form-checkbox size-5 rounded border-[#482329] bg-[#2f1619] text-primary focus:ring-primary focus:ring-offset-background-dark"
+                                type="checkbox" [(ngModel)]="showNew" (change)="fetchBikes()" />
+                            <span class="text-[#c9929b] group-hover:text-white transition-colors">New </span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input
+                                class="form-checkbox size-5 rounded border-[#482329] bg-[#2f1619] text-primary focus:ring-primary focus:ring-offset-background-dark"
+                                type="checkbox" [(ngModel)]="showUsed" (change)="fetchBikes()" />
+                            <span class="text-[#c9929b] group-hover:text-white transition-colors">Used </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- Filter Group: Price -->
+                <div class="flex flex-col gap-4 pb-6 border-b border-[#482329]">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-white font-bold text-lg">Price Range</h3>
+                        <span class="text-xs text-primary font-bold uppercase tracking-wider">Reset</span>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <input class="w-full h-1 bg-[#482329] rounded-lg appearance-none cursor-pointer accent-primary"
+                            type="range" min="2000" max="50000" [(ngModel)]="maxPrice" (change)="fetchBikes()" />
+                        <div class="flex items-center justify-between text-sm text-white font-medium">
+                            <div class="bg-[#2f1619] px-3 py-1 rounded border border-[#482329]">${{ minPrice }}</div>
+                            ...
+                            <div class="bg-[#2f1619] px-3 py-1 rounded border border-[#482329]">${{ maxPrice }}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Filter Group: Brand -->
+                
+                <!-- Filter Group: Engine -->
+                <div class="flex flex-col gap-3">
+                    <h3 class="text-white font-bold text-lg">Engine Size</h3>
+                    <div class="flex flex-col gap-2">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input
+                                class="form-radio size-5 border-[#482329] bg-[#2f1619] text-primary focus:ring-primary focus:ring-offset-background-dark"
+                                type="radio" name="engine" value="under-300" [(ngModel)]="engineFilter"
+                                (change)="onEngineFilterChange()" />
+                            <span class="text-[#c9929b] group-hover:text-white transition-colors">Under 300cc</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input
+                                class="form-radio size-5 border-[#482329] bg-[#2f1619] text-primary focus:ring-primary focus:ring-offset-background-dark"
+                                type="radio" name="engine" value="300-600" [(ngModel)]="engineFilter"
+                                (change)="onEngineFilterChange()" />
+                            <span class="text-[#c9929b] group-hover:text-white transition-colors">300cc - 600cc</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input
+                                class="form-radio size-5 border-[#482329] bg-[#2f1619] text-primary focus:ring-primary focus:ring-offset-background-dark"
+                                type="radio" name="engine" value="600-1000" [(ngModel)]="engineFilter"
+                                (change)="onEngineFilterChange()" />
+                            <span class="text-white">600cc - 1000cc</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input
+                                class="form-radio size-5 border-[#482329] bg-[#2f1619] text-primary focus:ring-primary focus:ring-offset-background-dark"
+                                type="radio" name="engine" value="1000-plus" [(ngModel)]="engineFilter"
+                                (change)="onEngineFilterChange()" />
+                            <span class="text-[#c9929b] group-hover:text-white transition-colors">1000cc +</span>
+                        </label>
+                        <button type="button"
+                            class="self-start mt-1 text-xs font-semibold text-primary hover:text-white hover:underline"
+                            (click)="clearEngineFilter()">
+                            Clear engine filter
+                        </button>
+                    </div>
+                </div>
+            </aside>
+            <!-- Main Content Area -->
+            <main class="flex-1 flex flex-col gap-6">
+                <!-- Sort & Results Bar -->
+                <div
+                    class="flex flex-wrap items-center justify-between gap-4 bg-[#2f1619]/50 rounded-xl p-4 border border-[#482329]">
+                    <h3 class="text-white text-lg font-bold"><span class="text-primary">{{ filteredBikes.length }}</span>
+                        Results
+                        Found</h3>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[#c9929b] text-sm font-medium hidden sm:block">Sort By:</span>
+                            <select
+                                class="form-select bg-[#2f1619] border-none text-white text-sm rounded-lg focus:ring-1 focus:ring-primary py-2 pl-3 pr-8 cursor-pointer">
+                                <option>Featured</option>
+                                <option>Price: Low to High</option>
+                                <option>Price: High to Low</option>
+                                <option>Newest Listed</option>
+                                <option>Mileage: Low to High</option>
+                            </select>
+                        </div>
+                        <div class="h-6 w-px bg-[#482329]"></div>
+                        <div class="flex gap-1">
+                            <button class="size-9 flex items-center justify-center rounded-lg bg-[#482329] text-white">
+                                <span class="material-symbols-outlined text-[20px]">grid_view</span>
+                            </button>
+                            <button
+                                class="size-9 flex items-center justify-center rounded-lg text-[#c9929b] hover:bg-[#482329]/50 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">view_list</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div *ngFor="let bike of pagedBikes"
+                        class="group flex flex-col bg-[#2f1619] rounded-xl overflow-hidden hover:shadow-[0_0_20px_rgba(212,17,50,0.15)] transition-all duration-300 border border-transparent hover:border-primary/30 relative">
+                        <div class="relative aspect-[4/3] w-full overflow-hidden">
+                            <img [src]="resolveImageUrl(bike)" [alt]="bike.title" loading="lazy"
+                                class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                            <!-- Favorite button overlay -->
+                            <div class="absolute top-3 right-3">
+                                <button
+                                  (click)="toggleFavorite(bike.id, $event)"
+                                  [disabled]="togglingId === bike.id"
+                                  [title]="isFavorited(bike.id) ? 'Remove from favorites' : 'Add to favorites'"
+                                  class="flex items-center justify-center size-8 rounded-full backdrop-blur-md text-white transition-all disabled:cursor-not-allowed"
+                                  [ngClass]="{
+                                    'bg-primary scale-110': isFavorited(bike.id),
+                                    'bg-black/40 hover:bg-primary': !isFavorited(bike.id)
+                                  }">
+                                  <span *ngIf="togglingId !== bike.id"
+                                    class="material-symbols-outlined text-lg"
+                                    [style.fontVariationSettings]="isFavorited(bike.id) ? '\'FILL\' 1' : '\'FILL\' 0'">
+                                    favorite
+                                  </span>
+                                  <span *ngIf="togglingId === bike.id"
+                                    class="material-symbols-outlined text-lg animate-spin">
+                                    progress_activity
+                                  </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-5 flex flex-col gap-3 flex-1">
+                            <div class="flex justify-between items-start gap-2">
+                                <h3
+                                    class="text-lg font-bold text-white leading-tight group-hover:text-primary transition-colors">
+                                    {{ bike.title }}</h3>
+                            </div>
+                            <div
+                                class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm text-[#c9929b] py-2 border-y border-[#482329]/50">
+                                <span class="flex items-center gap-1.5"><span
+                                        class="material-symbols-outlined text-[16px]">speed</span> {{ bike.engine_size
+                                    }}</span>
+                                <span class="flex items-center gap-1.5"><span
+                                        class="material-symbols-outlined text-[16px]">calendar_today</span> {{ bike.year
+                                    }}</span>
+                            </div>
+                            <div class="flex justify-between items-center mt-auto pt-2">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-[#c9929b] font-medium">Price</span>
+                                    <span class="text-2xl font-black text-white">${{ bike.price }}</span>
+                                </div>
+                                <button
+                                    class="text-sm font-bold text-white bg-[#482329] hover:bg-primary px-5 py-2.5 rounded-lg transition-colors shadow-lg"
+                                    [routerLink]="['/bikes',bike.id]">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="flex justify-center mt-8 pb-10">
+                    <div class="flex items-center gap-2">
+                        <button
+                            class="size-10 flex items-center justify-center rounded-lg bg-[#2f1619] border border-[#482329] text-white hover:border-primary transition-colors disabled:opacity-50"
+                            (click)="prevPage()" [disabled]="currentPage === 1">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <button *ngFor="let page of pages"
+                            class="size-10 flex items-center justify-center rounded-lg border border-[#482329] text-white hover:border-primary hover:text-primary transition-colors"
+                            [ngClass]="{
+                                'bg-primary font-bold shadow-lg shadow-primary/30 border-primary hover:text-white':
+                                    page === currentPage,
+                                'bg-[#2f1619]': page !== currentPage
+                            }"
+                            (click)="setPage(page)">
+                            {{ page }}
+                        </button>
+                        <button
+                            class="size-10 flex items-center justify-center rounded-lg bg-[#2f1619] border border-[#482329] text-white hover:border-primary hover:text-primary transition-colors disabled:opacity-50"
+                            (click)="nextPage()" [disabled]="currentPage === totalPages">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>

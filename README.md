@@ -1,27 +1,76 @@
-# Infamouswheelz
+# InfamousWheelz 🏍️
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.13.
+> A premium, full-stack marketplace platform for buying, selling, and managing high-end motorcycles.
 
-## Development server
+InfamousWheelz is designed with a sleek, modern UI utilizing a comprehensive role-based architecture. Built robustly with Angular and Node.js/Express, it offers dedicated experiences tailored uniquely to Buyers, Sellers, and Platform Administrators.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 🌟 Key Features
 
-## Code scaffolding
+### 🛡️ Role-Based Access Control (RBAC)
+- **Three Account Tiers**: Authenticate dynamically as a **Buyer**, **Seller**, or **Admin**. 
+- **Route Guarding**: Frontend Angular `AuthGuard` securely ensures users cannot access unauthorized pages.
+- **Backend Middleware**: Express token verification and `authorize()` middleware aggressively protects sensitive API endpoints.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 👥 Dashboards
+- **Buyer Garage**: Browse exclusive listings, add motorcycles to your personal Garage (Favorites list), and initiate inquiries with sellers.
+- **Seller Workspace**: A dedicated layout precisely for dealerships and sellers to manage their inventory pipeline, review direct inquiries, and easily track buyer statuses.
+- **Admin Command Center**: A super-admin suite calculating live database statistics (e.g. Total Users, Active Listings), with a powerful tabular view for managing and enabling/suspending community members seamlessly.
 
-## Build
+### ⚡ Technical Highlights
+- **Dynamic JWT Authentication**: Safe, encrypted stateless token authentication protecting application entry points.
+- **Responsive Aesthetics**: Powered deeply by **TailwindCSS**, rendering dynamic dark/light interface systems with butter-smooth micro-animations.
+- **Real-time Statistics**: Raw SQL metric extraction running in Node to compute live platform metrics rapidly. 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+---
 
-## Running unit tests
+## 💻 Tech Stack
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Frontend**: Angular 14, TypeScript, TailwindCSS, RxJS
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL (Raw SQL/`mysql2`)
+- **Security**: JWT (`jsonwebtoken`), Password Hashing (`bcryptjs`)
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 🚀 Getting Started
 
-## Further help
+Ensure you have **Node.js** and **MySQL** installed locally.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### 1. Database Configuration
+1. Start your local MySQL server.
+2. Initialize the schema using the provided database configurations within your setup (ensure tables `users`, `motorcycles`, `favorites`, and `inquiries` are created based on the models).
+3. If applicable, update the MySQL credentials dynamically mapped within `server/src/config/db.js` or via your `.env` variables if configured.
+
+### 2. Backend Setup
+1. Open a terminal and navigate to the backend folder:
+   ```bash
+   cd server
+   ```
+2. Install Node dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Express API server:
+   ```bash
+   npm start
+   # Server usually runs aggressively on http://localhost:3000
+   ```
+
+### 3. Frontend Setup
+1. Open up a second terminal and navigate to the client folder:
+   ```bash
+   cd client
+   ```
+2. Install Angular dependencies:
+   ```bash
+   npm install
+   ```
+3. Boot up the Angular Development Server:
+   ```bash
+   ng serve
+   # Application will compile and serve on http://localhost:4200
+   ```
+
+### 4. Admin Access
+To securely test Admin features:
+If an `admin` account does not exist natively, use a root database GUI tool (like MySQL Workbench) or script to change the `role` property of a specific user inside the `users` table from `'buyer'` to `'admin'`. Upon logging into the web app using that account, the platform will automatically detect the shield protocol and grant Super Admin Dashboard access!

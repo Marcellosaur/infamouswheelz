@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  body {
+    @apply font-body bg-background-light dark:bg-background-dark text-slate-900 dark:text-white;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* Custom scrollbar for a cleaner dark look */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #221013;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #482329;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d41132;
+}

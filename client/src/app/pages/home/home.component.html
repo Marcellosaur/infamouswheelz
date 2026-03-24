@@ -1,0 +1,278 @@
+<div class="relative flex min-h-screen w-full flex-col">
+    <!-- Top Navigation -->
+    <header
+        class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-surface-highlight bg-background-dark/95 backdrop-blur-md px-6 lg:px-10 py-3">
+        <div class="flex items-center gap-4 text-white cursor-pointer">
+    
+            <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Infamous<span
+                    class="text-primary text-xl font-bold leading-tight tracking-[-0.015em">Wheelz</span></h2>
+        </div>
+        <div class="hidden md:flex flex-1 justify-center gap-8">
+            <a routerLink="/garage"
+                class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors">Garage</a>
+    
+        </div>
+        <div class="flex items-center gap-4">
+            <!-- Guest buttons -->
+            <ng-container *ngIf="!isLoggedIn">
+                <a routerLink="/register">
+                    <button
+                        class="flex items-center justify-center rounded-lg h-9 px-4 bg-surface-dark border border-surface-border hover:border-primary text-white text-sm font-bold transition-all">
+                        Sign up
+                    </button>
+                </a>
+                <a routerLink="/login">
+                    <button
+                        class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-red-700 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">Login</span>
+                    </button>
+                </a>
+            </ng-container>
+            <!-- Logged-in: profile icon -->
+            <button
+                *ngIf="isLoggedIn"
+                (click)="goToDashboard()"
+                title="Go to Dashboard"
+                class="flex items-center justify-center size-9 rounded-full bg-surface-dark border border-surface-border hover:border-primary hover:text-primary text-white transition-all">
+                <span class="material-symbols-outlined text-[22px]">account_circle</span>
+            </button>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main class="flex-1">
+        <!-- Hero Section with Integrated Search -->
+        <section class="relative w-full">
+            <div class="hero-bg relative flex min-h-[600px] flex-col items-center justify-center p-4"
+                data-alt="Dark moody background with a sleek sport motorcycle silhouette in high contrast red lighting"
+                >
+                <div class="flex flex-col gap-6 text-center max-w-[800px] z-10 mt-10">
+                    <div class="flex flex-col gap-2">
+                        <h1
+                            class="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tight mb-6 max-w-4xl leading-[1.1]">
+                            Find Your Next <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-white">Adrenaline
+                                Rush</span>
+                        </h1>
+                        <h2
+                            class="text-gray-200 text-lg md:text-xl font-normal leading-normal max-w-2xl mx-auto drop-shadow-md">
+                            The premier marketplace for buying and selling motorcycles. Join thousands of riders
+                    finding their dream machine.
+                        </h2>
+                    </div>
+                    <!-- Integrated Search Bar -->
+                    <div class="w-full max-w-[700px] mx-auto mt-6">
+                        <div class="flex flex-col gap-4"> 
+                            <label class="relative flex flex-col w-full h-14 shadow-2xl shadow-black/50">
+                                <div
+                                    class="flex w-full flex-1 items-stretch rounded-xl h-full overflow-hidden bg-surface-highlight border border-white/10 focus-within:border-primary/50 transition-colors">
+                                    <div class="text-white/60 flex items-center justify-center pl-4 pr-2">
+                                        <span class="material-symbols-outlined text-[24px]">search</span>
+                                    </div>
+                                    <input
+                                        class="flex w-full min-w-0 flex-1 resize-none bg-transparent text-white focus:outline-0 border-none h-full placeholder:text-white/40 px-2 text-base font-normal leading-normal"
+                                        placeholder="Search Make, Model, or Keyword (e.g. Ducati V4)" value="" />
+                                    <button
+                                        class="bg-primary hover:bg-red-700 text-white font-bold px-6 h-full transition-colors">
+                                        Search
+                                    </button>
+                                </div>
+                            </label>
+                            <!-- Filters / Chips -->
+                            <div class="flex gap-3 flex-wrap justify-center">
+                                <button
+                                    class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-highlight border border-white/5 hover:border-primary/50 pl-4 pr-3 transition-all hover:bg-surface-highlight/80">
+                                    <p class="text-white text-sm font-medium">Brand</p>
+                                    <span
+                                        class="material-symbols-outlined text-white/70 text-[20px] group-hover:text-white">keyboard_arrow_down</span>
+                                </button>
+                                <button
+                                    class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-highlight border border-white/5 hover:border-primary/50 pl-4 pr-3 transition-all hover:bg-surface-highlight/80">
+                                    <p class="text-white text-sm font-medium">Price Range</p>
+                                    <span
+                                        class="material-symbols-outlined text-white/70 text-[20px] group-hover:text-white">keyboard_arrow_down</span>
+                                </button>
+                                <button
+                                    class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-highlight border border-white/5 hover:border-primary/50 pl-4 pr-3 transition-all hover:bg-surface-highlight/80">
+                                    <p class="text-white text-sm font-medium">Type</p>
+                                    <span
+                                        class="material-symbols-outlined text-white/70 text-[20px] group-hover:text-white">keyboard_arrow_down</span>
+                                </button>
+                                <button
+                                    class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-highlight border border-white/5 hover:border-primary/50 pl-4 pr-3 transition-all hover:bg-surface-highlight/80">
+                                    <p class="text-white text-sm font-medium">Year</p>
+                                    <span
+                                        class="material-symbols-outlined text-white/70 text-[20px] group-hover:text-white">keyboard_arrow_down</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Featured Section -->
+        <section class="px-4 md:px-10 lg:px-20 py-12 max-w-[1440px] mx-auto w-full">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-white text-3xl font-bold leading-tight tracking-[-0.015em]">Hot on the Block</h2>
+                <a class="text-primary text-sm font-bold uppercase tracking-wider hover:underline flex items-center gap-1"
+                    routerLink="/garage">
+                    View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </a>
+            </div>
+            <!-- Cards Grid -->
+            <div >
+                <div @slideIn class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div *ngFor="let bike of bikes | slice:0:4" class="group bg-surface-highlight rounded-xl overflow-hidden hover:-translate-y-1 transition-transform duration-300 border border-white/5 hover:border-primary/30 shadow-lg">
+                      <div class="relative h-48 overflow-hidden">
+                        <img
+                          [src]="resolveImageUrl(bike)"
+                          [alt]="bike.title"
+                          loading="lazy"
+                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <!-- Favorite button overlay -->
+                        <div class="absolute top-3 right-3">
+                          <button
+                            (click)="toggleFavorite(bike.id, $event)"
+                            [disabled]="togglingId === bike.id"
+                            [title]="isFavorited(bike.id) ? 'Remove from favorites' : 'Add to favorites'"
+                            class="flex items-center justify-center size-8 rounded-full backdrop-blur-md text-white transition-all disabled:cursor-not-allowed"
+                            [ngClass]="{
+                              'bg-primary scale-110': isFavorited(bike.id),
+                              'bg-black/40 hover:bg-primary': !isFavorited(bike.id)
+                            }">
+                            <span *ngIf="togglingId !== bike.id"
+                              class="material-symbols-outlined text-lg"
+                              [style.fontVariationSettings]="isFavorited(bike.id) ? '\'FILL\' 1' : '\'FILL\' 0'">
+                              favorite
+                            </span>
+                            <span *ngIf="togglingId === bike.id"
+                              class="material-symbols-outlined text-lg animate-spin">
+                              progress_activity
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                      <!-- Card body -->
+                      <div class="p-4 flex flex-col gap-3">
+                        <div>
+                          <h3 class="text-white font-bold text-lg leading-tight">{{ bike.title }}</h3>
+                          <p class="text-white/50 text-xs mt-1">{{ bike.brand }}</p>
+                        </div>
+                        <div class="flex items-center justify-between border-t border-white/10 pt-3 mt-1">
+                          <div class="flex gap-4 text-white/80 text-xs font-medium">
+                            <span class="flex items-center gap-1">
+                              <span class="material-symbols-outlined text-[14px]">local_gas_station</span>
+                              {{ bike.engine_size }}
+                            </span>
+                            <span class="flex items-center gap-1">
+                              <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                              {{ bike.year }}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-1">
+                          <span class="text-primary text-xl font-bold">${{ bike.price }}</span>
+                          <button class="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary text-white transition-colors"
+                          [routerLink]="['/bikes',bike.id]">
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            
+        </section>
+        <!-- Browse by Type (Chips expanded concept) -->
+        
+        <!-- Seller CTA -->
+        <section class="mt-12 w-full px-4 md:px-10 lg:px-20 py-16">
+            <div class="relative w-full rounded-2xl overflow-hidden bg-[#221013] border border-white/10">
+                <!-- Background accent -->
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
+                <div class="absolute top-0 right-0 w-1/2 h-full bg-[url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&amp;w=2070&amp;auto=format&amp;fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"
+                    data-alt="Abstract garage background texture"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 p-8 md:p-12">
+                    <div class="flex flex-col gap-4 max-w-xl">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/40 w-fit">
+                            <span class="size-2 rounded-full bg-primary animate-pulse"></span>
+                            <span class="text-primary text-xs font-bold uppercase tracking-wider">Seller's
+                                Market</span>
+                        </div>
+                        <h2 class="text-white text-3xl md:text-4xl font-black uppercase tracking-tight">Gathering
+                            Dust? Turn it into Cash.</h2>
+                        <p class="text-gray-300 text-lg">Listing on InfamousWheelz is fast, secure, and puts your
+                            machine in front of thousands of verified enthusiasts.</p>
+                        <div class="flex gap-6 mt-2 text-sm font-medium text-gray-400">
+                            <span class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-primary">check_circle</span> Instant
+                                Valuation</span>
+                            <span class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-primary">check_circle</span> Verified
+                                Buyers</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <a routerLink="/register">
+                        <button
+                            class="flex h-14 items-center justify-center gap-3 rounded-lg bg-primary hover:bg-red-700 px-8 text-white font-bold text-lg shadow-lg shadow-primary/20 transition-all hover:scale-105">
+                            List Your Motorcycle
+                            <span class="material-symbols-outlined">sell</span>
+                        </button>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-surface-highlight bg-surface-dark pt-12 pb-8">
+        <div class="px-4 md:px-10 lg:px-20 w-full">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="col-span-1 md:col-span-1 flex flex-col gap-4">
+                    <div class="flex items-center gap-2 text-white">
+                        <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Infamous<span
+                            class="text-primary text-xl font-bold leading-tight tracking-[-0.015em">Wheelz</span></h2>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">The trusted community for buying, selling, and
+                        discussing high-performance motorcycles.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Marketplace</h4>
+                    <ul class="flex flex-col gap-2 text-gray-400 text-sm">
+                        <li><a class="hover:text-primary transition-colors" href="#">Browse All</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Sport Bikes</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Cruisers</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Auctions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Community</h4>
+                    <ul class="flex flex-col gap-2 text-gray-400 text-sm">
+                        <li><a class="hover:text-primary transition-colors" href="#">Forums</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Events</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Newsletter</h4>
+                    <div class="flex flex-col gap-3">
+                        <input
+                            class="bg-background-dark border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
+                            placeholder="Enter your email" type="email" />
+                        <button
+                            class="bg-white/10 hover:bg-white/20 text-white text-sm font-bold py-2 rounded-lg transition-colors">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-gray-500 text-xs">© 2024 InfamousWheelz Inc. All rights reserved.</p>
+                <div class="flex gap-6 text-gray-500 text-xs">
+                    <a class="hover:text-white" href="#">Privacy Policy</a>
+                    <a class="hover:text-white" href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

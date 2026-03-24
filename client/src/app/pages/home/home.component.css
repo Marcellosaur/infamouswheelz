@@ -1,0 +1,18 @@
+/* Styles here are specific to the home component */
+/* Redundant global styles have been moved to src/styles.css */
+/* client/src/app/pages/home/home.component.css */
+
+.hero-bg {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(34, 16, 19, 1) 100%), url("/assets/images/Superleg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Change image for screens smaller than 640px (Mobile) */
+@media (max-width: 640px) {
+    .hero-bg {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(34, 16, 19, 1) 100%), url("/assets/images/V4-fron.jpg");
+        background-attachment: scroll; /* Fixed backgrounds often lag on mobile */
+    }
+}
